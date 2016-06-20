@@ -9,15 +9,26 @@ cd /opt/code/git/protected/certificates_demo.greenitglobe.com
 git pull
 
 cd /opt/nginx/cfg
-if [[ -z ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'` ]]; then
-  mkdir ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
-fi
+
 if [[ -z ssl ]]; then
   echo [*_*] ssl dir not found, creating ssl ...
   mkdir ssl
-  echo [*] Move old Certs to packup dir
+elif [[ -z ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'` ]]; then
+  mkdir ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
+  echo [*] Move old Certs to backup dir
+  mv ssl/* ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
+else
+  echo [*] Move old Certs to backup dir
   mv ssl/* ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
 fi
+
+#if [[ -z ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'` ]]; then
+#  mkdir ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
+#fi
+
+#echo [*] Move old Certs to backup dir
+#mv ssl/* ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
+
 echo [*] Move old Certs to packup dir
 mv ssl/* ssl-`timedatectl | grep 'Local\ time' | awk '{print $4}'`
 
